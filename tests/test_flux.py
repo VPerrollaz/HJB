@@ -35,6 +35,20 @@ def test_bistabilitite():
     assert f2._regime_bistable()
 
 
+def test_verification():
+    f1 = Flux(a=1, b=1, c=1, d=1, bx=1, by=1, alpha=1, beta=1, M=2)
+    assert not f1.verifications()
+
+    f2 = Flux(a=1, b=2, c=2, d=1, bx=1, by=1, alpha=1, beta=1, M=2)
+    assert f2.verifications()
+
+
+def test_coexistence():
+    f2 = Flux(a=1, b=2, c=2, d=1, bx=1, by=1, alpha=1, beta=1, M=2)
+    x, y = f2.etat_coexistence()
+    assert (x == 1 / 3) and (y == 1/3)
+
+
 def test_evaluation():
     f = Flux(a=1, b=1, c=1, d=1, bx=1, by=1, alpha=1, beta=1, M=2)
     assert np.allclose(f(np.array((1, 1)), 0), np.array([-1, -1]))

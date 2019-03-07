@@ -47,6 +47,19 @@ class Flux:
         y_stable = (self._a * self._bx - self._b * self._by < 0)
         return x_stable and y_stable
 
+    def verifications(self):
+        """Ensemble des vérifications: positivité, bistabilité, coexistence."""
+        pos = self._parametres_positifs()
+        bis = self._regime_bistable()
+        det = self._a * self._d - self._b * self._c < 0
+        return pos and bis and det
+
+    def etat_coexistence(self):
+        """Calcul de l'état d'équilibre de coexistence des espèces."""
+        det = self._a * self._d - self._b * self._c
+        return (self._d * (self._a * self._bx - self._b * self._by) / det,
+                self._a * (self._d * self._by - self._c * self._bx) / det)
+
     def __repr__(self):
         arguments = ["a", "b", "c", "d", "bx", "by", "alpha", "beta", "M"]
         correspondance = {arg: getattr(self, f"_{arg}")
