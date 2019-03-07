@@ -24,15 +24,15 @@ import numpy as np
 class Flux:
     """Modélisation d'un flux pour le système de Lotka-Volterra ci dessus."""
     def __init__(self, a, b, c, d, bx, by, alpha, beta, M):
-        self.a = a
-        self.b = b
-        self.c = c
-        self.d = d
-        self.bx = bx
-        self.by = by
-        self.alpha = alpha
-        self.beta = beta
-        self.M = M
+        self._a = a
+        self._b = b
+        self._c = c
+        self._d = d
+        self._bx = bx
+        self._by = by
+        self._alpha = alpha
+        self._beta = beta
+        self._M = M
 
     def _parametres_positifs(self):
         """Vérification que les arguments sont positifs."""
@@ -43,8 +43,8 @@ class Flux:
 
     def _regime_bistable(self):
         """Vérification du régime bistable."""
-        x_stable = (self.d * self.by - self.c * self.bx < 0)
-        y_stable = (self.a * self.bx - self.b * self.by < 0)
+        x_stable = (self._d * self._by - self._c * self._bx < 0)
+        y_stable = (self._a * self._bx - self._b * self._by < 0)
         return x_stable and y_stable
 
     def __call__(self, X, u):
@@ -55,9 +55,9 @@ class Flux:
         :param u: contrôle
         :type u: float
         """
-        assert 0 <= u <= self.M
+        assert 0 <= u <= self._M
         x, y = X
-        return np.array((x * (self.a * (self.bx - x) - self.b * y
-                         - self.alpha * u),
-                         y * (self.d * (self.by - y) - self.c * x
-                         - self.beta * u)))
+        return np.array((x * (self._a * (self._bx - x) - self._b * y
+                         - self._alpha * u),
+                         y * (self._d * (self._by - y) - self._c * x
+                         - self._beta * u)))
