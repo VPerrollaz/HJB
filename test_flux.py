@@ -11,6 +11,7 @@ Tests de flux.
 """
 
 from flux import Flux
+import numpy as np
 
 
 def test_instanciation():
@@ -32,3 +33,11 @@ def test_bistabilitite():
 
     f2 = Flux(a=1, b=2, c=2, d=1, bx=1, by=1, alpha=1, beta=1, M=2)
     assert f2._regime_bistable()
+
+
+def test_evaluation():
+    f = Flux(a=1, b=1, c=1, d=1, bx=1, by=1, alpha=1, beta=1, M=2)
+    assert np.allclose(f(np.array((1, 1)), 0), np.array([-1, -1]))
+    assert np.allclose(f(np.array((1, 0)), 0), np.array([0, 0]))
+    assert np.allclose(f(np.array((0, 1)), 0), np.array([0, 0]))
+    assert np.allclose(f(np.array((1, 1)), 1), np.array([-2, -2]))
