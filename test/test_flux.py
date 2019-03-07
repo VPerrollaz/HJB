@@ -10,7 +10,7 @@
 Tests de flux.
 """
 
-from flux import Flux
+from hjb.flux import Flux
 import numpy as np
 
 
