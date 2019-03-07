@@ -47,6 +47,14 @@ class Flux:
         y_stable = (self._a * self._bx - self._b * self._by < 0)
         return x_stable and y_stable
 
+    def __repr__(self):
+        arguments = ["a", "b", "c", "d", "bx", "by", "alpha", "beta", "M"]
+        correspondance = {arg: getattr(self, f"_{arg}")
+                          for arg in arguments}
+        arguments = ", ".join([a+"={}".format(correspondance[a])
+                               for a in arguments])
+        return "Flux({})".format(arguments)
+
     def __call__(self, X, u):
         """Evaluation du flux pour l'état X et le contrôle u.
 

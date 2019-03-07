@@ -41,3 +41,9 @@ def test_evaluation():
     assert np.allclose(f(np.array((1, 0)), 0), np.array([0, 0]))
     assert np.allclose(f(np.array((0, 1)), 0), np.array([0, 0]))
     assert np.allclose(f(np.array((1, 1)), 1), np.array([-2, -2]))
+
+
+def test_repr():
+    chaine = "Flux(a=1, b=1, c=1, d=1, bx=1, by=1, alpha=1, beta=1, M=2)"
+    f = eval(chaine)
+    assert repr(f) == chaine
