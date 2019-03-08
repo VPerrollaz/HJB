@@ -99,3 +99,12 @@ class Systeme:
         :type X: 2-tuple ou numpy.array
         """
         return self.flux(X, self._M)
+
+    def borne(self):
+        """Renvoit un majorant brut de la norme du flux dans le carré stable.
+        """
+        arr = np.array([self.bx * (self._a * self.bx + self._b * self.by
+                                   + self._alpha * self._M),
+                        self.by * (self._c * self.bx + self._d * self.by
+                                   + self._beta * self._M)])
+        return np.linalg.norm(arr)
