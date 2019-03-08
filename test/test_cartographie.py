@@ -4,7 +4,6 @@
 from hjb.cartographie import Valeur
 from hjb.systeme import Systeme
 import pytest
-import numpy as np
 
 
 @pytest.fixture
@@ -19,11 +18,6 @@ def test_instanciation(setup):
     assert isinstance(v, Valeur)
 
 
-def test_grille(setup):
+def test_discretisation_spatiale(setup):
     s, v = setup
-    Nx = np.floor(s.bx / v.dl) + 1
-    xs = np.arange(0, s.bx, s.bx / Nx)
-    assert np.allclose(v.xs, xs)
-    Ny = np.floor(s.by / v.dl) + 1
-    ys = np.arange(0, s.by, s.by / Ny)
-    assert np.allclose(v.ys, ys)
+    assert (v.dx < v.dl) and (v.dy < v.dl)

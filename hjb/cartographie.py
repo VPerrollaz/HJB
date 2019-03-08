@@ -27,6 +27,8 @@ class Valeur:
         self.T = T
         self.dl = dl
         Nx = np.floor(sys.bx / dl) + 1
-        self.xs = np.arange(0, sys.bx, sys.bx / Nx)
+        self.dx = sys.bx / Nx
+        self.xs = np.arange(0, sys.bx, self.dx)
         Ny = np.floor(sys.by / dl) + 1
-        self.ys = np.arange(0, sys.by, sys.by / Ny)
+        self.dy = sys.by / Ny
+        self.ys = np.arange(0, sys.by, self.dy)
