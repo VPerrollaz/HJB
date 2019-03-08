@@ -9,3 +9,19 @@
 """
 Cartographie de la fonction valeur.
 """
+
+
+class Valeur:
+    """Evolution de la fonction valeur pour un système donné en un temps donné
+    avec une certaine taille de grille.
+
+    :param sys: Sytème différentiel associé.
+    :type sys: Systeme
+    :param T: Horizon de temps pour le contrôle.
+    :type T: float
+    :param dl: taille de la grille spatiale.
+    """
+    def __init__(self, sys, T, dl):
+        self.sys = sys
+        self.T = T
+        self.dl = dl
