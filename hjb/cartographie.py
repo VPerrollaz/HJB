@@ -9,6 +9,7 @@
 """
 Cartographie de la fonction valeur.
 """
+import numpy as np
 
 
 class Valeur:
@@ -25,3 +26,7 @@ class Valeur:
         self.sys = sys
         self.T = T
         self.dl = dl
+        Nx = np.floor(sys.bx / dl) + 1
+        self.xs = np.arange(0, sys.bx, sys.bx / Nx)
+        Ny = np.floor(sys.by / dl) + 1
+        self.ys = np.arange(0, sys.by, sys.by / Ny)

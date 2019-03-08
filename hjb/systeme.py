@@ -23,13 +23,13 @@ import numpy as np
 
 class Systeme:
     """Modélisation d'un flux pour le système de Lotka-Volterra ci dessus."""
-    def __init__(self, a, b, c, d, bx, by, alpha, beta, M):
+    def __init__(self, a, b, c, d, alpha, beta, M, bx, by):
         self._a = a
         self._b = b
         self._c = c
         self._d = d
-        self._bx = bx
-        self._by = by
+        self.bx = bx
+        self.by = by
         self._alpha = alpha
         self._beta = beta
         self._M = M
@@ -43,8 +43,8 @@ class Systeme:
 
     def _regime_bistable(self):
         """Vérification du régime bistable."""
-        x_stable = (self._d * self._by - self._c * self._bx < 0)
-        y_stable = (self._a * self._bx - self._b * self._by < 0)
+        x_stable = (self._d * self.by - self._c * self.bx < 0)
+        y_stable = (self._a * self.bx - self._b * self.by < 0)
         return x_stable and y_stable
 
     def verifications(self):
@@ -57,16 +57,17 @@ class Systeme:
     def etat_coexistence(self):
         """Calcul de l'état d'équilibre de coexistence des espèces."""
         det = self._a * self._d - self._b * self._c
-        return (self._d * (self._a * self._bx - self._b * self._by) / det,
-                self._a * (self._d * self._by - self._c * self._bx) / det)
+        return (self._d * (self._a * self.bx - self._b * self.by) / det,
+                self._a * (self._d * self.by - self._c * self.bx) / det)
 
     def __repr__(self):
-        arguments = ["a", "b", "c", "d", "bx", "by", "alpha", "beta", "M"]
+        arguments = ["a", "b", "c", "d", "alpha", "beta", "M"]
         correspondance = {arg: getattr(self, f"_{arg}")
                           for arg in arguments}
         arguments = ", ".join([a+"={}".format(correspondance[a])
                                for a in arguments])
-        return "Systeme({})".format(arguments)
+        autres = ", bx={}, by={}".format(self.bx, self.by)
+        return "Systeme({})".format(arguments + autres)
 
     def flux(self, X, u):
         """Evaluation du flux pour l'état X et le contrôle u.
@@ -78,9 +79,9 @@ class Systeme:
         """
         assert 0 <= u <= self._M
         x, y = X
-        return np.array((x * (self._a * (self._bx - x) - self._b * y
+        return np.array((x * (self._a * (self.bx - x) - self._b * y
                          - self._alpha * u),
-                         y * (self._d * (self._by - y) - self._c * x
+                         y * (self._d * (self.by - y) - self._c * x
                          - self._beta * u)))
 
     def flux_libre(self, X):

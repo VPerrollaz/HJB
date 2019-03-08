@@ -50,7 +50,7 @@ def test_coexistence():
 
 
 def test_repr():
-    chaine = "Systeme(a=1, b=1, c=1, d=1, bx=1, by=1, alpha=1, beta=1, M=2)"
+    chaine = "Systeme(a=1, b=1, c=1, d=1, alpha=1, beta=1, M=2, bx=1, by=1)"
     f = eval(chaine)
     assert repr(f) == chaine
 
