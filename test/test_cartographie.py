@@ -4,6 +4,7 @@
 from hjb.cartographie import Valeur
 from hjb.systeme import Systeme
 import pytest
+import numpy as np
 
 
 @pytest.fixture
@@ -20,4 +21,9 @@ def test_instanciation(setup):
 
 def test_discretisation_spatiale(setup):
     s, v = setup
-    assert (v.dx < v.dl) and (v.dy < v.dl)
+    assert (v.dx <= v.dl) and (v.dy <= v.dl)
+
+
+def test_cfl(setup):
+    s, v = setup
+    assert np.sqrt(2) * v.dt * s.borne() <= v.dl
