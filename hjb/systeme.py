@@ -21,7 +21,7 @@ espèces avec un contrôle multiplicatif de prélevement.
 import numpy as np
 
 
-class Flux:
+class Systeme:
     """Modélisation d'un flux pour le système de Lotka-Volterra ci dessus."""
     def __init__(self, a, b, c, d, bx, by, alpha, beta, M):
         self._a = a
@@ -66,9 +66,9 @@ class Flux:
                           for arg in arguments}
         arguments = ", ".join([a+"={}".format(correspondance[a])
                                for a in arguments])
-        return "Flux({})".format(arguments)
+        return "Systeme({})".format(arguments)
 
-    def __call__(self, X, u):
+    def flux(self, X, u):
         """Evaluation du flux pour l'état X et le contrôle u.
 
         :param X: état du système
@@ -82,3 +82,19 @@ class Flux:
                          - self._alpha * u),
                          y * (self._d * (self._by - y) - self._c * x
                          - self._beta * u)))
+
+    def flux_libre(self, X):
+        """Flux sans contrôle.
+
+        :param X: état du système
+        :type X: 2-tuple ou numpy.array
+        """
+        return self.flux(X, 0.)
+
+    def flux_bang(self, X):
+        """Flux avec contrôle saturé.
+
+        :param X: état du système
+        :type X: 2-tuple ou numpy.array
+        """
+        return self.flux(X, self._M)
