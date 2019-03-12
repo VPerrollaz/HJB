@@ -73,6 +73,12 @@ def test_flux_vectoriel(s1):
     valeurs_reelles = np.array([[0, 0], [0, 0], [0, 0], [-1, -1]])
     valeurs_calculees = s1.flux(points, controle)
     assert np.allclose(valeurs_reelles, valeurs_calculees)
+    valeurs_reelles = np.array([[0, 0], [0, 0], [0, 0], [-1, -1]])
+    valeurs_calculees = s1.flux_libre(points)
+    assert np.allclose(valeurs_calculees, valeurs_reelles)
+    valeurs_reelles = np.array([[0, 0], [-2, 0], [0, -2], [-3, -3]])
+    valeurs_calculees = s1.flux_bang(points)
+    assert np.allclose(s1.flux_bang(points), valeurs_reelles)
 
 
 def test_borne(s1):
