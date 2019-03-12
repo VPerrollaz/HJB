@@ -62,4 +62,4 @@ class Valeur:
 
         self.indice -= 1
         approx = RGI((self.xs, self.ys), self.valeurs[self.indice + 1, ...])
-        self.valeurs[self.indice] = np.maximum(approx(p_libre), approx(p_bang))
+        self.valeurs[self.indice] = np.minimum(approx(p_libre), approx(p_bang))
