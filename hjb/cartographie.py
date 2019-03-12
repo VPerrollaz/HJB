@@ -40,6 +40,8 @@ class Valeur:
         self.dt = T / Nt
         self.ts = np.linspace(0, T, Nt)
 
+        X, Y = np.meshgrid(self.xs, self.ys)
+        self.points = np.stack([X.flatten(), Y.flatten()]).T
         self.valeurs = np.zeros((Nt, Nx, Ny))
 
     def initialisation_terminale(self):
