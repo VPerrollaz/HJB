@@ -43,5 +43,6 @@ class Valeur:
         self.valeurs = np.zeros((Nt, Nx, Ny))
 
     def initialisation_terminale(self):
-        self.valeurs[-1, ...] = ((self.xs[:, None]) ** 2
-                                 + (self.ys[None, :] - self.sys.by) ** 2) / 2.
+        self.valeurs[-1, ...] = ((self.xs[:, np.newaxis]) ** 2
+                                 + (self.ys[np.newaxis, :] - self.sys.by) ** 2
+                                 ) / 2.
