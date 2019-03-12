@@ -27,3 +27,11 @@ def test_discretisation_spatiale(setup):
 def test_cfl(setup):
     s, v = setup
     assert np.sqrt(2) * v.dt * s.borne() <= v.dl
+
+
+def test_etat_final(setup):
+    s, v = setup
+    v.initialisation_terminale()
+    p = np.linspace(0, 1., 10)
+    valeurs_reelles = ((p[:, None]) ** 2 + (p[None, :] - 1.) ** 2) / 2
+    assert np.allclose(v.valeurs[-1, ...], valeurs_reelles)

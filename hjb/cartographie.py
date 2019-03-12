@@ -39,3 +39,9 @@ class Valeur:
         Nt = math.ceil(math.sqrt(2) * T * sys.borne() / dl)
         self.dt = T / Nt
         self.ts = np.linspace(0, T, Nt)
+
+        self.valeurs = np.zeros((Nt, Nx, Ny))
+
+    def initialisation_terminale(self):
+        self.valeurs[-1, ...] = ((self.xs[:, None]) ** 2
+                                 + (self.ys[None, :] - self.sys.by) ** 2) / 2.
