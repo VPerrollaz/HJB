@@ -67,8 +67,17 @@ def test_flux(s1):
     assert np.allclose(s1.flux_bang(np.array((1, 1))), np.array([-3, -3]))
 
 
+def test_flux_vectoriel(s1):
+    points = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
+    controle = np.array([0, 0, 0, 0])
+    valeurs_reelles = np.array([[0, 0], [0, 0], [0, 0], [-1, -1]])
+    valeurs_calculees = s1.flux(points, controle)
+    assert np.allclose(valeurs_reelles, valeurs_calculees)
+
+
 def test_borne(s1):
     for _ in range(10):
         mu, nu, theta = np.random.rand(3)
         x, y, u = mu * s1.bx, nu * s1.by, theta * s1._M
-        assert np.linalg.norm(s1.flux([x, y], u)) < s1.borne()
+        X = np.array([x, y])
+        assert np.linalg.norm(s1.flux(X, u)) < s1.borne()

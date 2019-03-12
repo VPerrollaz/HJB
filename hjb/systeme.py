@@ -73,16 +73,16 @@ class Systeme:
         """Evaluation du flux pour l'état X et le contrôle u.
 
         :param X: état du système
-        :type X: 2-tuple ou numpy.array
+        :type X: numpy.array (n,2)
         :param u: contrôle
-        :type u: float
+        :type u: numpy.array (n)
         """
-        assert 0 <= u <= self._M
-        x, y = X
-        return np.array((x * (self._a * (self.bx - x) - self._b * y
+        assert np.alltrue((0 <= u) & (u <= self._M))
+        x, y = X[..., 0], X[..., 1]
+        return np.stack([x * (self._a * (self.bx - x) - self._b * y
                          - self._alpha * u),
                          y * (self._d * (self.by - y) - self._c * x
-                         - self._beta * u)))
+                         - self._beta * u)]).T
 
     def flux_libre(self, X):
         """Flux sans contrôle.
