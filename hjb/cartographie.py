@@ -15,51 +15,81 @@ from scipy.interpolate import RegularGridInterpolator as RGI
 
 
 class Valeur:
-    """Evolution de la fonction valeur pour un système donné en un temps donné
-    avec une certaine taille de grille.
+    """Evolution de la fonction valeur pour un système contrôlé donné et
+    sur une grille donnée.
 
     :param sys: Sytème différentiel associé.
     :type sys: Systeme
-    :param T: Horizon de temps pour le contrôle.
-    :type T: float
-    :param dl: taille de la grille spatiale.
+    :param xs: grille spatiale en x
+    :type xs: numpy.ndarray
+    :param ys: grille spatiale en y
+    :type ys: numpy.ndarray
+    :param ts: grille temporelle
+    :type ts: numpy.ndarray
     """
-    def __init__(self, sys, T, dl):
+    def __init__(self, sys, xs, ys, ts):
         self.sys = sys
-        self.T = T
-        self.dl = dl
-
-        Nx = math.floor(sys.bx / dl)
-        self.dx = sys.bx / Nx
-        self.xs = np.linspace(0, sys.bx, Nx)
-
-        Ny = math.floor(sys.by / dl)
-        self.dy = sys.by / Ny
-        self.ys = np.linspace(0, sys.by, Ny)
-
-        Nt = math.ceil(math.sqrt(2) * T * sys.borne() / dl)
-        self.dt = T / Nt
-        self.ts = np.linspace(0, T, Nt)
+        self.xs = xs
+        self.ys = ys
+        self.ts = ts
 
         X, Y = np.meshgrid(self.xs, self.ys)
         self.points = np.stack([X.flatten(), Y.flatten()]).T
-        self.valeurs = np.zeros((Nt, Nx, Ny))
+        self.valeurs = np.zeros((len(ts), len(xs), len(ys)))
+
+    @classmethod
+    def from_dl(cls, sys, T, dl):
+        """Constructeur alternatif simplifié. Garanti la condition CFL.
+
+        :param sys: système différentiel
+        :type sys: Systeme
+        :param T: fenetre de temps pour l'action du contrôle
+        :type T: float
+        :param dl: taille de la discrétisation spatiale
+        :type dl: float
+        """
+        Nx = math.floor(sys.bx / dl)
+        xs = np.linspace(0, sys.bx, Nx)
+
+        Ny = math.floor(sys.by / dl)
+        ys = np.linspace(0, sys.by, Ny)
+
+        Nt = math.ceil(math.sqrt(2) * T * sys.borne() / dl)
+        ts = np.linspace(0, T, Nt)
+        return cls(sys=sys, xs=xs, ys=ys, ts=ts)
+
+    def verification_cfl(self):
+        """Test la condifion CFL."""
+        dx = (self.xs[-1] - self.xs[0]) / len(self.xs)
+        dy = (self.ys[-1] - self.ys[0]) / len(self.ys)
+        dl = min(dx, dy)
+        dt = (self.ts[-1] - self.ts[0]) / len(self.ts)
+        return np.sqrt(2) * dt * self.sys.borne() <= dl
+
+    def verification_extremites(self):
+        """Vérification que la grille spatiale va jusqu'au état semitriviaux.
+        """
+        return (self.xs[-1] == self.sys.bx) and (self.ys[-1] == self.sys.by)
 
     def initialisation_terminale(self):
         """Initialisation de la fonction valeur en fonction du cout terminal.
         """
-        self.indice = len(self.ts) - 1
         self.valeurs[-1, ...] = ((self.xs[:, np.newaxis]) ** 2
                                  + (self.ys[np.newaxis, :] - self.sys.by) ** 2
                                  ) / 2.
 
-    def step(self):
+    def step(self, indice):
+        """Passage de l'instant t à t - delta_t, contrôle supposé bang-bang.
+
+        :param indice: indice de l'instant t
+        :type indice: int
+        """
+        assert 0 < indice < len(self.ts)
         f_libre = self.sys.flux_libre(self.points)
         p_libre = self.points + self.dt * f_libre
 
         f_bang = self.sys.flux_bang(self.points)
-        p_bang = self.points + self.dt + f_bang
+        p_bang = self.points + self.dt * f_bang
 
-        self.indice -= 1
-        approx = RGI((self.xs, self.ys), self.valeurs[self.indice + 1, ...])
-        self.valeurs[self.indice] = np.minimum(approx(p_libre), approx(p_bang))
+        approx = RGI((self.xs, self.ys), self.valeurs[indice + 1, ...])
+        self.valeurs[indice - 1] = np.minimum(approx(p_libre), approx(p_bang))
