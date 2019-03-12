@@ -11,6 +11,7 @@ Cartographie de la fonction valeur.
 """
 import math
 import numpy as np
+from scipy.interpolate import RegularGridInterpolator as RGI
 
 
 class Valeur:
@@ -45,6 +46,20 @@ class Valeur:
         self.valeurs = np.zeros((Nt, Nx, Ny))
 
     def initialisation_terminale(self):
+        """Initialisation de la fonction valeur en fonction du cout terminal.
+        """
+        self.indice = len(self.ts) - 1
         self.valeurs[-1, ...] = ((self.xs[:, np.newaxis]) ** 2
                                  + (self.ys[np.newaxis, :] - self.sys.by) ** 2
                                  ) / 2.
+
+    def step(self):
+        f_libre = self.sys.flux_libre(self.points)
+        p_libre = self.points + self.dt * f_libre
+
+        f_bang = self.sys.flux_bang(self.points)
+        p_bang = self.points + self.dt + f_bang
+
+        self.indice -= 1
+        approx = RGI((self.xs, self.ys), self.valeurs[self.indice + 1, ...])
+        self.valeurs[self.indice] = np.maximum(approx(p_libre), approx(p_bang))
