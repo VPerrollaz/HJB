@@ -10,7 +10,8 @@ défavorable via Hamilton-Jacobi.
 
 # Reste à faire
 
+- Meshgrid est inversé par rapport à RGI (en fait il y a double contravariance)
 - Visualisation du résultat.
 - Création Classe abstraite pour les systèmes?
-- Documentation de la méthode numérique utilisée.
-- Notebooks de démonstrations.
+- Documentation de la méthode numérique utilisée (dossier documentation).
+- Notebooks de démonstrations (dossier notebooks).
