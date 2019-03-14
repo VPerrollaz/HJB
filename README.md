@@ -7,10 +7,12 @@ défavorable via Hamilton-Jacobi.
 
 - une classe pour la modélisation du système différentiel avec contrôle.
 - une classe pour la cartographie stockant la valeur
+- un dossier pour les maths
+- un dossier pour des exemples en notebooks. 
 
 # Reste à faire
 
-- Meshgrid est inversé par rapport à RGI (en fait il y a double contravariance)
+- Test resolution passé. (prendre en compte l'ordre choisi)
 - Visualisation du résultat.
 - Création Classe abstraite pour les systèmes?
 - Documentation de la méthode numérique utilisée (dossier documentation).
