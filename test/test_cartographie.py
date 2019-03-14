@@ -73,14 +73,14 @@ def test_points(s):
                ys=np.array([0, 1]),
                ts=np.array([0, 1])
                )
-    assert np.all(v.points == np.array([[0, 0], [1, 0], [0, 1], [1, 1]]))
+    assert np.all(v.points == np.array([[0, 0], [0, 1], [1, 0], [1, 1]]))
 
 
 def test_points_grand(s, v):
     assert v.points.shape == (100, 2)
     assert np.allclose(v.points[0], [0, 0])
-    assert np.allclose(v.points[9], [1, 0])
-    assert np.allclose(v.points[90], [0, 1])
+    assert np.allclose(v.points[9], [0, 1])
+    assert np.allclose(v.points[90], [1, 0])
     assert np.allclose(v.points[-1], [1, 1])
 
 
@@ -91,15 +91,15 @@ def test_etat_final(s):
                ts=np.array([0, 1])
                )
     v.initialisation_terminale()
-    manuel = np.array([[0.5, 1], [0, 0.5]])
+    manuel = np.array([[0.5, 0], [1, 0.5]])
     assert np.allclose(v.valeurs[-1], manuel)
 
 
 def test_etat_final_grand(s, v):
     v.initialisation_terminale()
     p = np.linspace(0, 1., 10)
-    valeurs_reelles = ((p[np.newaxis, :]) ** 2
-                       + (p[:, np.newaxis] - 1.) ** 2) / 2
+    valeurs_reelles = ((p[:, np.newaxis]) ** 2
+                       + (p[np.newaxis, :] - 1.) ** 2) / 2
     assert np.allclose(v.valeurs[-1, ...], valeurs_reelles)
 
 
@@ -127,8 +127,8 @@ def test_resolution(s):
                ts=np.array([0, 0.5, 1])
                )
     v.resolution()
-    manuel = np.array([[[0.5, 0.625], [0, 0.375]],
-                       [[0.5, 0.75], [0, 0.5]],
-                       [[0.5, 1], [0, 0.5]]])
+    manuel = np.array([[[0.5, 0], [0.625, 0.375]],
+                       [[0.5, 0], [0.75, 0.5]],
+                       [[0.5, 0], [1, 0.5]]])
     for k in reversed(range(3)):
         assert np.allclose(v.valeurs[k], manuel[k]), f"valeur de k {k}"
