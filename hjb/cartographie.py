@@ -74,8 +74,8 @@ class Valeur:
     def initialisation_terminale(self):
         """Initialisation de la fonction valeur en fonction du cout terminal.
         """
-        self.valeurs[-1, ...] = ((self.xs[np.newaxis, :]) ** 2
-                                 + (self.ys[:, np.newaxis] - self.sys.by) ** 2
+        self.valeurs[-1, ...] = ((self.xs[:, np.newaxis]) ** 2
+                                 + (self.ys[np.newaxis, :] - self.sys.by) ** 2
                                  ) / 2.
 
     def step(self, vals, dt):
