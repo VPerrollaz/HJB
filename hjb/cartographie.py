@@ -74,8 +74,8 @@ class Valeur:
     def initialisation_terminale(self):
         """Initialisation de la fonction valeur en fonction du cout terminal.
         """
-        self.valeurs[-1, ...] = ((self.xs[:, np.newaxis]) ** 2
-                                 + (self.ys[np.newaxis, :] - self.sys.by) ** 2
+        self.valeurs[-1, ...] = ((self.xs[np.newaxis, :]) ** 2
+                                 + (self.ys[:, np.newaxis] - self.sys.by) ** 2
                                  ) / 2.
 
     def step(self, vals, dt):
@@ -94,3 +94,12 @@ class Valeur:
 
         approx = RGI((self.xs, self.ys), vals)
         return np.minimum(approx(p_libre), approx(p_bang))
+
+    def resolution(self):
+        """Resolution de l'équation d'Hamilton-Jacobi pour la fonction valeur.
+        """
+        self.initialisation_terminale()
+        for k in reversed(range(1, len(self.ts))):
+            self.valeurs[k - 1] = (self.step(vals=self.valeurs[k],
+                                   dt=self.ts[k] - self.ts[k - 1])
+                                   ).reshape(len(self.xs), len(self.ys)).T
