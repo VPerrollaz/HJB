@@ -78,18 +78,19 @@ class Valeur:
                                  + (self.ys[np.newaxis, :] - self.sys.by) ** 2
                                  ) / 2.
 
-    def step(self, indice):
+    def step(self, vals, dt):
         """Passage de l'instant t à t - delta_t, contrôle supposé bang-bang.
 
-        :param indice: indice de l'instant t
-        :type indice: int
+        :param vals: Tableau des valeurs
+        :type vals: numpy.array (len(self.xs), len(self.ys))
+        :param dt: pas de temps
+        :type dt: float
         """
-        assert 0 < indice < len(self.ts)
         f_libre = self.sys.flux_libre(self.points)
-        p_libre = self.points + self.dt * f_libre
+        p_libre = self.points + dt * f_libre
 
         f_bang = self.sys.flux_bang(self.points)
-        p_bang = self.points + self.dt * f_bang
+        p_bang = self.points + dt * f_bang
 
-        approx = RGI((self.xs, self.ys), self.valeurs[indice + 1, ...])
-        self.valeurs[indice - 1] = np.minimum(approx(p_libre), approx(p_bang))
+        approx = RGI((self.xs, self.ys), vals)
+        return np.minimum(approx(p_libre), approx(p_bang))

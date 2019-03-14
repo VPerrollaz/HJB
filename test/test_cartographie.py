@@ -67,7 +67,16 @@ def test_cfl(s):
     assert not v.verification_cfl()
 
 
-def test_points(s, v):
+def test_points(s):
+    v = Valeur(sys=s,
+               xs=np.array([0, 1]),
+               ys=np.array([0, 1]),
+               ts=np.array([0, 1])
+               )
+    assert np.all(v.points == np.array([[0, 0], [1, 0], [0, 1], [1, 1]]))
+
+
+def test_points_grand(s, v):
     assert v.points.shape == (100, 2)
     assert np.allclose(v.points[0], [0, 0])
     assert np.allclose(v.points[9], [1, 0])
@@ -81,3 +90,15 @@ def test_etat_final(s, v):
     valeurs_reelles = ((p[:, np.newaxis]) ** 2
                        + (p[np.newaxis, :] - 1.) ** 2) / 2
     assert np.allclose(v.valeurs[-1, ...], valeurs_reelles)
+
+
+def test_step(s):
+    v = Valeur(sys=s,
+               xs=np.array([0, 1]),
+               ys=np.array([0, 1]),
+               ts=np.array([0, 1])
+               )
+    manuel = np.array([0, 0, 0, 0])
+    automatique = v.step(vals=np.array([0, 0, 0, 0]).reshape(2, 2),
+                         dt=0.j)
+    assert np.all(manuel == automatique)
