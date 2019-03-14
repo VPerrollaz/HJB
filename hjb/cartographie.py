@@ -34,7 +34,7 @@ class Valeur:
         self.ts = ts
 
         X, Y = np.meshgrid(self.xs, self.ys)
-        self.points = np.stack([X.flatten(), Y.flatten()]).T
+        self.points = np.stack([X.T.flatten(), Y.T.flatten()]).T
         self.valeurs = np.zeros((len(ts), len(xs), len(ys)))
 
     @classmethod
