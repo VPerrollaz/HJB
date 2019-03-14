@@ -100,5 +100,10 @@ def test_step(s):
                )
     manuel = np.array([0, 0, 0, 0])
     automatique = v.step(vals=np.array([0, 0, 0, 0]).reshape(2, 2),
-                         dt=0.j)
+                         dt=0.5)
     assert np.all(manuel == automatique)
+
+    manuel = np.array([0, 0.5, 0.5, 0])
+    automatique = v.step(vals=np.array([0, 1, 1, 2]).reshape(2, 2),
+                         dt=0.5)
+    assert np.allclose(manuel, automatique)
