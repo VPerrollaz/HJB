@@ -19,6 +19,16 @@ def v(s):
     return v
 
 
+@pytest.fixture
+def vs(s):
+    vs = Valeur(sys=s,
+                xs=np.array([0, 1]),
+                ys=np.array([0, 1]),
+                ts=np.array([0, 0.5, 1])
+                )
+    return vs
+
+
 def test_instanciation(s):
     v = Valeur(sys=s,
                xs=np.linspace(0, 1, 2),
@@ -67,68 +77,56 @@ def test_cfl(s):
     assert not v.verification_cfl()
 
 
-def test_points(s):
-    v = Valeur(sys=s,
-               xs=np.array([0, 1]),
-               ys=np.array([0, 1]),
-               ts=np.array([0, 1])
-               )
-    assert np.all(v.points == np.array([[0, 0], [1, 0], [0, 1], [1, 1]]))
+def test_points(s, vs):
+    assert np.all(vs.points == np.array([[0, 0], [0, 1], [1, 0], [1, 1]]))
 
 
 def test_points_grand(s, v):
     assert v.points.shape == (100, 2)
     assert np.allclose(v.points[0], [0, 0])
-    assert np.allclose(v.points[9], [1, 0])
-    assert np.allclose(v.points[90], [0, 1])
+    assert np.allclose(v.points[9], [0, 1])
+    assert np.allclose(v.points[90], [1, 0])
     assert np.allclose(v.points[-1], [1, 1])
 
 
-def test_etat_final(s):
-    v = Valeur(sys=s,
-               xs=np.array([0, 1]),
-               ys=np.array([0, 1]),
-               ts=np.array([0, 1])
-               )
-    v.initialisation_terminale()
-    manuel = np.array([[0.5, 1], [0, 0.5]])
-    assert np.allclose(v.valeurs[-1], manuel)
+def test_etat_final(s, vs):
+    vs.initialisation_terminale()
+    manuel = np.array([[0.5, 0], [1, 0.5]])
+    assert np.allclose(vs.valeurs[-1], manuel)
 
 
 def test_etat_final_grand(s, v):
     v.initialisation_terminale()
     p = np.linspace(0, 1., 10)
-    valeurs_reelles = ((p[np.newaxis, :]) ** 2
-                       + (p[:, np.newaxis] - 1.) ** 2) / 2
+    valeurs_reelles = ((p[:, np.newaxis]) ** 2
+                       + (p[np.newaxis, :] - 1.) ** 2) / 2
     assert np.allclose(v.valeurs[-1, ...], valeurs_reelles)
 
 
-def test_step(s):
-    v = Valeur(sys=s,
-               xs=np.array([0, 1]),
-               ys=np.array([0, 1]),
-               ts=np.array([0, 1])
-               )
-    manuel = np.array([0, 0, 0, 0])
-    automatique = v.step(vals=np.array([0, 0, 0, 0]).reshape(2, 2),
-                         dt=0.5)
+def test_nouveaux_points(s, vs):
+    p_l, p_b = vs.nouveaux_points(dt=0.5)
+    q_l = np.array([[0, 0], [0, 1], [1, 0], [0.5, 0.5]])
+    q_b = np.array([[0, 0], [0, 0.5], [0.5, 0], [0, 0]])
+    assert np.allclose(p_l, q_l)
+    assert np.allclose(p_b, q_b)
+
+
+def test_step(s, vs):
+    manuel = np.array([[0, 0], [0, 0]])
+    automatique = vs.step(vals=np.array([0, 0, 0, 0]).reshape(2, 2),
+                          dt=0.5)
     assert np.all(manuel == automatique)
 
-    manuel = np.array([0, 0.5, 0.5, 0])
-    automatique = v.step(vals=np.array([0, 1, 1, 2]).reshape(2, 2),
-                         dt=0.5)
+    manuel = np.array([[0., 0.5], [0.5, 0]])
+    automatique = vs.step(vals=np.array([0, 1, 1, 2]).reshape(2, 2),
+                          dt=0.5)
     assert np.allclose(manuel, automatique)
 
 
-def test_resolution(s):
-    v = Valeur(sys=s,
-               xs=np.array([0, 1]),
-               ys=np.array([0, 1]),
-               ts=np.array([0, 0.5, 1])
-               )
-    v.resolution()
-    manuel = np.array([[[0.5, 0.625], [0, 0.375]],
-                       [[0.5, 0.75], [0, 0.5]],
-                       [[0.5, 1], [0, 0.5]]])
+def test_resolution(s, vs):
+    vs.resolution()
+    manuel = np.array([[[0.5, 0], [0.625, 0.4375]],
+                       [[0.5, 0], [0.75, 0.5]],
+                       [[0.5, 0], [1, 0.5]]])
     for k in reversed(range(3)):
-        assert np.allclose(v.valeurs[k], manuel[k]), f"valeur de k {k}"
+        assert np.allclose(vs.valeurs[k], manuel[k]), f"valeur de k {k}"

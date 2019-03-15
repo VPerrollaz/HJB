@@ -34,7 +34,7 @@ class Valeur:
         self.ts = ts
 
         X, Y = np.meshgrid(self.xs, self.ys)
-        self.points = np.stack([X.flatten(), Y.flatten()]).T
+        self.points = np.stack([X.T.flatten(), Y.T.flatten()]).T
         self.valeurs = np.zeros((len(ts), len(xs), len(ys)))
 
     @classmethod
@@ -74,9 +74,22 @@ class Valeur:
     def initialisation_terminale(self):
         """Initialisation de la fonction valeur en fonction du cout terminal.
         """
-        self.valeurs[-1, ...] = ((self.xs[np.newaxis, :]) ** 2
-                                 + (self.ys[:, np.newaxis] - self.sys.by) ** 2
+        self.valeurs[-1, ...] = ((self.xs[:, np.newaxis]) ** 2
+                                 + (self.ys[np.newaxis, :] - self.sys.by) ** 2
                                  ) / 2.
+
+    def nouveaux_points(self, dt):
+        """Récupération des points après déplacement par les flux.
+
+        :param dt: pas de temps
+        :type dt: float
+        """
+        f_libre = self.sys.flux_libre(self.points)
+        p_libre = self.points + dt * f_libre
+
+        f_bang = self.sys.flux_bang(self.points)
+        p_bang = self.points + dt * f_bang
+        return p_libre, p_bang
 
     def step(self, vals, dt):
         """Passage de l'instant t à t - delta_t, contrôle supposé bang-bang.
@@ -86,14 +99,11 @@ class Valeur:
         :param dt: pas de temps
         :type dt: float
         """
-        f_libre = self.sys.flux_libre(self.points)
-        p_libre = self.points + dt * f_libre
-
-        f_bang = self.sys.flux_bang(self.points)
-        p_bang = self.points + dt * f_bang
-
+        p_libre, p_bang = self.nouveaux_points(dt)
         approx = RGI((self.xs, self.ys), vals)
-        return np.minimum(approx(p_libre), approx(p_bang))
+        v_libre = approx(p_libre)
+        v_bang = approx(p_bang)
+        return np.minimum(v_libre, v_bang).reshape(len(self.xs), len(self.ys))
 
     def resolution(self):
         """Resolution de l'équation d'Hamilton-Jacobi pour la fonction valeur.
@@ -101,5 +111,4 @@ class Valeur:
         self.initialisation_terminale()
         for k in reversed(range(1, len(self.ts))):
             self.valeurs[k - 1] = (self.step(vals=self.valeurs[k],
-                                   dt=self.ts[k] - self.ts[k - 1])
-                                   ).reshape(len(self.xs), len(self.ys)).T
+                                   dt=self.ts[k] - self.ts[k - 1]))
