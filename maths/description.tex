@@ -1,0 +1,296 @@
+\documentclass[a4paper,11pt,draft]{article}
+
+\usepackage[frenchb]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amstext}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+
+\usepackage{a4wide}
+\usepackage{graphicx}
+\usepackage{multimedia}
+%\usepackage{hyperref}
+
+\usepackage[notref]{showkeys}
+
+\def\R{\mathbb{R}}
+\def\N{\mathbb{N}}
+\def\C{\mathbb{C}}
+\def\Z{\mathbb{Z}}
+\def\Q{\mathbb{Q}}
+
+\def\Ac{\mathcal{A}}
+\def\Bc{\mathcal{B}}
+\def\Cc{\mathcal{C}}
+\def\Dc{\mathcal{D}}
+\def\Ec{\mathcal{E}}
+\def\Fc{\mathcal{F}}
+\def\Gc{\mathcal{G}}
+\def\Hc{\mathcal{H}}
+\def\Ic{\mathcal{I}}
+\def\Jc{\mathcal{J}}
+\def\Kc{\mathcal{K}}
+\def\Lc{\mathcal{L}}
+\def\Mc{\mathcal{M}}
+\def\Nc{\mathcal{N}}
+\def\Oc{\mathcal{O}}
+\def\Pc{\mathcal{P}}
+\def\Qc{\mathcal{Q}}
+\def\Rc{\mathcal{R}}
+\def\Sc{\mathcal{S}}
+\def\Tc{\mathcal{T}}
+\def\Uc{\mathcal{U}}
+\def\Vc{\mathcal{V}}
+\def\Wc{\mathcal{W}}
+\def\Xc{\mathcal{X}}
+\def\Yc{\mathcal{Y}}
+\def\Zc{\mathcal{Z}}
+
+\def\Id{\mathrm{Id}}
+
+\newtheorem{exercice}{Exercice}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newtheorem{notation}{Notation}
+
+\title{Contrôle optimal pour Lotka-Volterra en mode bistable. Notations standardisées}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Problèmatique}
+\label{sec:1}
+
+On s'intéresse au système suivant
+\begin{equation} \label{eq:1}
+    \begin{cases}
+        \dot{x}=x(a(\bar{x}-x)-by)\\
+        \dot{y}=y(d(\bar{y}-y)-cx)
+    \end{cases}
+\end{equation}
+les coefficients $a,b,c,d,\bar{x}, \bar{y}$ sont tous positifs.
+\
+On contrôle ce système à l'aide d'un contrôle scalaire multiplicatif $u(t)\in [0,M]$. Le système contrôlé s'écrit :
+\begin{equation} \label{eq:2}
+    \begin{cases}
+        \dot{x}=x(a(\bar{x}-x)-by-\alpha u)\\
+        \dot{y}=y(d(\bar{y}-y)-cx-\beta u)
+    \end{cases}
+\end{equation}
+On appelle {\it système saturé}\ le système \eqref{eq:2} avec $u\equiv M$ (cf. \eqref{eq:3}).
+
+Notons que le contrôle multiplicatif assure la conservation du quadrant positif pour \eqref{eq:2}.
+{\bf But : } On cherche à utiliser le contrôle $u$ pour conduire l'espèce $x$ à l'extinction
+alors qu'elle survivrait sans le contrôle.
+
+La première idée est d'utiliser des techniques issues du contrôle optimal. Plus précisément on
+cherche à minimiser la fonctionnelle
+\begin{equation}
+    J(u):=\frac{x^2(T) + (y(T)-\bar{y})^2}{2}.
+\end{equation}
+Le principe du maximum de Pontryagin permet de constater que le contrôle optimal est forcément
+Bang-Bang ce qui conduit à analyser les systèmes autonomes pour $u=0$ et $u=M$.
+
+\section{Le système sans contrôle}
+\subsection{Les solutions stationnaires}
+Les isoclines du systèmes \eqref{eq:1} sont simples et s'écrivent :
+$$\dot{x}=0, \quad x=0\text{ ou } ax+by=a\bar{x}.$$
+$$\dot{y}=0, \quad y=0\text{ ou } cx+dy=d\bar{y}.$$
+
+$O=(0,0)$ est toujours un état stationnaire. On a également toujours les deux solutions stationnaires semi-triviales :
+$\bar{X}=(\bar{x},0)$ et $\bar{Y}=(0,\bar{y})$.
+Enfin, supposons que $ad-bc\neq 0$. Il y a éventuellement une solution stationnaires positives :
+
+$$\bar{C}=(x_c,y_c):=\left(\frac{d(a\bar{x}-b\bar{y})}{ad-bc},\frac{a(d\bar{y}-c\bar{x})}{ad-bc}\right).$$
+
+Cette solution existe et est positive si et seulement chacune de ses composantes est positive.  
+\subsection{Stabilité linaire}
+\'Etudions les Jacobiennes en tout point. On note $J_A$ la jacobienne du système \eqref{eq:1} en un point $A=(x_A,y_A)$.\\
+On a 
+\begin{equation*}
+J_O=
+\begin{pmatrix}
+    a\bar{x}&0\\
+    0&d\bar{y}
+\end{pmatrix}.
+\end{equation*}
+
+{\bf $O$ est donc toujours instable.}
+
+\begin{equation*}
+J_{\bar{X}}=
+\begin{pmatrix}
+    -a\bar{x}&-b\bar{x}\\
+    0&d\bar{y}-c\bar{x}
+\end{pmatrix}.
+\end{equation*}
+{\bf $\bar{X}$ est donc (asymptotiquement) stable si et seulement si $d\bar{y}-c\bar{x} <0$ }
+
+$$J_{\bar{Y}}=
+\begin{pmatrix}
+    a\bar{x}-b\bar{y}&0\\
+    -d\bar{y}&-c\bar{x}
+\end{pmatrix}.
+$$
+{\bf $\bar{Y}$ est donc (asymptotiquement) stable si et seulement si $a\bar{x}-b\bar{y} <0$ }
+
+
+$$J_{\bar{C}}=
+\begin{pmatrix}
+    -ax_c&-dx_c\\
+    -c y_c&-dy_c
+\end{pmatrix}.
+$$
+{\bf Sa trace étant négative, $\bar{C}$ est  (asymptotiquement) stable si et seulement si son déterminant est positif à savoir $ad-bc >0$ et est instable si $ad-bc<0$ }.
+
+
+\subsection{Différents régimes}
+Si $ad-bc\neq 0$ il y a quatre régimes possibles.
+
+\paragraph{Bistable :}
+Si $d\bar{y}-c\bar{x} <0$ et $a\bar{x}-b\bar{y} < 0$ alors $x_c>0$, $y_c>0$ et  $ad-bc<0$. Ce régime est le régime bistable :
+$\bar{X}$ est stable, $\bar{Y}$ est stable et par conséquent $\bar{C}$ est instable.
+
+\paragraph{Coexistence :}
+Si $d\bar{y}-c\bar{x} >0$ et $a\bar{x}-b\bar{y} > 0$ alors $x_c>0$, $y_c>0$ et  $ad-bc>0$. Ce régime est le régime de coexistence :
+$\bar{X}$ est instable, $\bar{Y}$ est instable et par conséquent $\bar{C}$ est stable.
+
+\paragraph{Exclusion de $y$ :}
+Si $d\bar{y}-c\bar{x} <0$ et $a\bar{x}-b\bar{y} > 0$ alors $\bar{C}$ n'existe pas. Ce régime est un régime d'exclusion compétitive (de $y$):
+$\bar{X}$ est stable, $\bar{Y}$ est instable.
+
+\paragraph{Exclusion de $x$ :}
+Si $d\bar{y}-c\bar{x} >0$ et $a\bar{x}-b\bar{y} < 0$ alors $\bar{C}$ n'existe pas. Ce régime est  un régime d'exclusion compétitive (de $x$): :
+$\bar{X}$ est instable, $\bar{Y}$ est stable.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Le système avec contrôle saturé}
+Dans le cas d'un contrôle saturé $u(t)=M$, le système \eqref{eq:2} se réécrit sous la forme du système \eqref{eq:1} en posant 
+$$\bar{x}_M=\bar{x}-\frac{\alpha M}{a},\quad \bar{y}_M=\bar{y}-\frac{\beta M}{d}.$$
+
+\begin{equation} \label{eq:3}
+    \begin{cases}
+        \dot{x}=x(a(\bar{x}_M-x)-by)\\
+        \dot{y}=y(d(\bar{y}_M-y)-cx)
+    \end{cases}
+\end{equation}
+Attention cependant, ce système a la même structure que \eqref{eq:1} si $\bar{x}_M$ et $\bar{y}_M$ sont positive (cf hypothèse $(C_0)$ ci dessous).
+\subsection{Les solutions stationnaires}
+Les isoclines du systèmes \eqref{eq:3} sont simples et s'écrivent :
+$$\dot{x}=0, \quad x=0\text{ où } ax+by=a\bar{x}_M.$$
+$$\dot{y}=0, \quad y=0\text{ où } cx+dy=d\bar{y}_M.$$
+
+$O=(0,0)$ est toujours un état stationnaire.
+
+
+ On a également  les deux solutions stationnaires semi-triviales :
+$\bar{X}_M=(\bar{x}_M,0)$ et $\bar{Y}_M=(0,\bar{y})$.\\
+{\bf Ces solutions sont positives si et seulement si 
+$$(C_0)\;:\;\begin{cases} \bar{x}_M=\bar{x}-\frac{\alpha M}{a}>0 \\ \bar{y}_M=\bar{y}-\frac{\beta M}{d}>0.\end{cases}$$}
+
+Comme dans le cas précédent, il y a  y a éventuellement une solution stationnaires positives :
+
+$$\bar{C}_M=(x_{c,M},y_{c,M})=\left(\frac{d(a\bar{x}_M-b\bar{y}_M)}{ad-bc},\frac{a(d\bar{y}_M-c\bar{x}_M)}{ad-bc}\right).$$
+
+Cette solution existe et est positive si et seulement chacune de ses composantes est positive.  
+\subsection{Stabilité linaire du système saturé}
+
+L'étude précédente nous donne les conditions suivantes :
+
+{\bf $O$ est  instable si et seulement si $\bar{x}_M$ ou $\bar{y}_M$ est positif.}
+
+{\bf Si $\bar{X}_M$ existe, il est  (asymptotiquement) stable si et seulement si $d\bar{y}_M-c\bar{x}_M <0$.}
+
+{\bf Si $\bar{Y}_M$ existe, il est (asymptotiquement) stable si et seulement si $d\bar{y}-c\bar{x} <0$.}
+
+{\bf Si $P_M$ existe, il est $\begin{cases} \text{(asymptotiquement) stable si $ad-bc>0$}\\
+\text{instable si $ad-bc<0$ }\end{cases}$.}
+
+\subsection{Différents régimes}
+Si $ad-bc\neq 0$ il y a quatre régimes possibles pour le système saturé :
+
+\paragraph{Bistable :}
+Si $d\bar{y}_M-c\bar{x}_M <0$ et $a\bar{x}_M-b\bar{y}_M < 0$ alors $x_{c,M}>0$, $y_{c,M}>0$ et  $ad-bc<0$. Ce régime est le régime bistable :
+$\bar{X}_M$ est stable, $\bar{Y}_M$ est stable et par conséquent $\bar{C}_M$ est instable.
+
+\paragraph{Coexistence :}
+Si $d\bar{y}_{M}-c\bar{x}_{M} >0$ et $a\bar{x}_{M}-b\bar{y}_{M} > 0$ alors $x_{c,M}>0$, $y_{c,M}>0$ et  $ad-bc>0$. Ce régime est le régime de coexistence :
+$\bar{X}_{M}$ est instable, $\bar{Y}_{M}$ est instable et par conséquent $\bar{C}_{M}$ est stable.
+
+\paragraph{Exclusion de $y$ :}
+Si $d\bar{y}_{M}-c\bar{x}_{M} <0$ et $a\bar{x}_{M}-b\bar{y}_{M} > 0$ alors $\bar{C}_{M}$ n'existe pas. Ce régime est un régime d'exclusion compétitive (de $y$):
+$\bar{X}_M$ est stable, $\bar{Y}_M$ est instable.
+
+\paragraph{Exclusion de $x$ :}
+Si $d\bar{y}_M-c\bar{x}_M >0$ et $a\bar{x}_M-b\bar{y}_M < 0$ alors $\bar{C}_{M}$ n'existe pas. Ce régime est  un régime d'exclusion compétitive (de $x$): :
+$\bar{X}_M$ est instable, $\bar{Y}_M$ est stable.
+
+\section{Méthodes numériques}
+
+Bien qu'on puisse utiliser les équations fournies par le principe du Maximum de Pontryagin, la
+résolution du problème est délicate car on a des conditions aux bords ($t=0$ et $t=T$) plutôt
+qu'un simple problème de Cauchy et la sensibilité aux conditions initiales est très grande pour
+faire marcher une méthode de Tir. On s'oriente donc plutôt vers une résolution de l'équation
+d'Hamilton-Jacobi associée à la fonction valeur.
+
+On introduit donc 
+\begin{equation}
+    V(t_0, x_0, y_0) := \underset{u\in L^\infty([t_0,T]; [0,M])}{\inf} \frac{x^2(T) +
+    (y(T)-\bar{y})^2}{2}. 
+\end{equation}
+avec $x,y$ solution de \eqref{eq:2} satisfaisant $x(t_0)=x_0$ et $y(t_0)=y_0$.
+
+Le principe de programmation dynamique permet alors d'écrire que $V$ satisfait
+\begin{equation}\label{eq:4}
+    V(t_0,x_0,y_0) = \underset{u\in L^\infty([t_0,t_0+h],[0,M])}{\inf} V(t_0+h, x(t_0+h), y(t_0+h))
+\end{equation}
+pour $h$ positif petit.  On pourrait alors montrer que $V$ est solution au sens des solutions
+de viscosité de l'équation
+\begin{equation}
+    \begin{cases}
+        \partial_t V + H(x,y,\partial_x V, \partial_y V)=0,\\
+        V(T,x,y)= \frac{x^2 + (y-\bar{y})^2}{2}.
+    \end{cases}
+\end{equation}
+où $H$ est donnée par
+\begin{align}
+    H(x,y,p,q) & = \underset{u\in[0,M]}{\inf} p x (a (\bar{x} - x) - bx -\alpha u)
+    + q y (d (\bar{y} - y) -c x - \beta u)\\
+               & = p x (a (\bar{x} - x) - bx) + q y (d (\bar{y} - y) -c x ) - M (\alpha p x +
+               \beta q y)^+.
+\end{align}
+En fait d'un point de vue numérique on repart de \eqref{eq:4} que l'on discrétise pour obtenir
+\begin{equation}\label{eq:5}
+    V(t, x, y) = \underset{u\in[0,M]}{\inf} V(t+\Delta t, x + \Delta t f(x,y,u), y + \Delta t
+    g(x, y,u)).
+\end{equation}
+avec $f$ et $g$ donnés par
+\begin{equation}
+    \begin{cases}
+        f(x,y,u) = x (a (\bar{x} - x) - b y - \alpha u)\\
+        g(x,y,u) = y (d (\bar{y} - y) - c x - \beta u).
+    \end{cases}
+\end{equation}
+On échantillonne alors $V$ sur une grille rectangulaire de $[0,\bar{x}] \times [0, \bar{y}]$
+(ce domaine étant invariant par les flux quand $u$ est positif). On évalue alors le terme de
+droite dans \eqref{eq:5} via une interpolation adaptée à une grille rectangulaire (plus simple
+et précis que les élements finis P1).
+
+On a au passage une condition CFL qui nous dit que en un pas de temps le flux ne doit pas nous
+faire sortir des cases adjacentes à notre point d'échantillonnement.
+\end{document}
