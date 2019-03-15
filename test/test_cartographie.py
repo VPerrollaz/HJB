@@ -77,8 +77,18 @@ def test_cfl(s):
     assert not v.verification_cfl()
 
 
+<<<<<<< HEAD
 def test_points(s, vs):
     assert np.all(vs.points == np.array([[0, 0], [0, 1], [1, 0], [1, 1]]))
+=======
+def test_points(s):
+    v = Valeur(sys=s,
+               xs=np.array([0, 1]),
+               ys=np.array([0, 1]),
+               ts=np.array([0, 1])
+               )
+    assert np.all(v.points == np.array([[0, 0], [0, 1], [1, 0], [1, 1]]))
+>>>>>>> c45c198c07afe773417991ea459c29d9e4cba2ba
 
 
 def test_points_grand(s, v):
@@ -89,10 +99,22 @@ def test_points_grand(s, v):
     assert np.allclose(v.points[-1], [1, 1])
 
 
+<<<<<<< HEAD
 def test_etat_final(s, vs):
     vs.initialisation_terminale()
     manuel = np.array([[0.5, 0], [1, 0.5]])
     assert np.allclose(vs.valeurs[-1], manuel)
+=======
+def test_etat_final(s):
+    v = Valeur(sys=s,
+               xs=np.array([0, 1]),
+               ys=np.array([0, 1]),
+               ts=np.array([0, 1])
+               )
+    v.initialisation_terminale()
+    manuel = np.array([[0.5, 0], [1, 0.5]])
+    assert np.allclose(v.valeurs[-1], manuel)
+>>>>>>> c45c198c07afe773417991ea459c29d9e4cba2ba
 
 
 def test_etat_final_grand(s, v):
@@ -123,9 +145,20 @@ def test_step(s, vs):
     assert np.allclose(manuel, automatique)
 
 
+<<<<<<< HEAD
 def test_resolution(s, vs):
     vs.resolution()
     manuel = np.array([[[0.5, 0], [0.625, 0.4375]],
+=======
+def test_resolution(s):
+    v = Valeur(sys=s,
+               xs=np.array([0, 1]),
+               ys=np.array([0, 1]),
+               ts=np.array([0, 0.5, 1])
+               )
+    v.resolution()
+    manuel = np.array([[[0.5, 0], [0.625, 0.375]],
+>>>>>>> c45c198c07afe773417991ea459c29d9e4cba2ba
                        [[0.5, 0], [0.75, 0.5]],
                        [[0.5, 0], [1, 0.5]]])
     for k in reversed(range(3)):
