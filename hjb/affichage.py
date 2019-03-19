@@ -51,19 +51,23 @@ def affichage_3d(v):
     return fig
 
 
-def affichage_contour(v):
+def affichage_contour(v, im=10, num=11):
     """Renvoit une figure avec les courbes de niveaux des fonctions valeurs
     initiales et finales.
 
     :param v: objet valeur
     :type v: Valeur
+    :param im: nombre d'images affichées
+    :type im: int
     """
-    fig, (axl, axr) = plt.subplots(ncols=2)
+    fig, axs = plt.subplots(ncols=im, figsize=(8 * im, 8))
     X, Y = np.meshgrid(v.xs, v.ys)
-    axl.contour(X.T, Y.T, v.valeurs[-1], levels=np.linspace(0, 1, 10))
-    axl.set_title("t=T")
-    axr.contour(X.T, Y.T, v.valeurs[0], levels=np.linspace(0, 1, 10))
-    axr.set_title("t=0")
+    n = len(v.ts)
+    delta = n // im
+    for i, ax in enumerate(axs):
+        ax.contour(X.T, Y.T, v.valeurs[n - i * delta - 1],
+                   levels=np.linspace(0, 1, num))
+        ax.set_title(f"t={v.ts[n - i * delta - 1]}")
     return fig
 
 
