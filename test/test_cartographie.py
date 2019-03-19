@@ -98,8 +98,8 @@ def test_etat_final(s, vs):
 def test_etat_final_grand(s, v):
     v.initialisation_terminale()
     p = np.linspace(0, 1., 10)
-    valeurs_reelles = ((p[:, np.newaxis]) ** 2
-                       + (p[np.newaxis, :] - 1.) ** 2) / 2
+    valeurs_reelles = (np.abs(p[:, np.newaxis])
+                       + np.abs(p[np.newaxis, :] - 1.)) / 2
     assert np.allclose(v.valeurs[-1, ...], valeurs_reelles)
 
 

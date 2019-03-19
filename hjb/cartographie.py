@@ -75,7 +75,7 @@ class Valeur:
         """Initialisation de la fonction valeur en fonction du cout terminal.
         """
         self.valeurs[-1, ...] = (np.abs(self.xs[:, np.newaxis])
-                                 + np.abs(1. - self.ys[np.newaxis, :]))
+                                 + np.abs(1. - self.ys[np.newaxis, :])) / 2
 
     def nouveaux_points(self, dt):
         """Récupération des points après déplacement par les flux.
