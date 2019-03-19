@@ -50,6 +50,13 @@ def test_coexistence():
     assert (x == 1 / 3) and (y == 1/3)
 
 
+def test_exemple():
+    s1 = Systeme.exemple_simple()
+    assert not s1.verifications()
+    s2 = Systeme.exemple_bistable()
+    assert s2.verifications()
+
+
 def test_repr():
     chaine = "Systeme(a=1, b=1, c=1, d=1, alpha=1, beta=1, M=2, bx=1, by=1)"
     f = eval(chaine)

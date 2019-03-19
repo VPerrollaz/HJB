@@ -34,6 +34,14 @@ class Systeme:
         self._beta = beta
         self._M = M
 
+    @classmethod
+    def exemple_simple(cls):
+        return cls(a=1, b=1, c=1, d=1, alpha=1, beta=1, M=1, bx=1, by=1)
+
+    @classmethod
+    def exemple_bistable(cls):
+        return cls(a=1, b=2, c=2, d=1, alpha=1, beta=1, M=1, bx=1, by=1)
+
     def _parametres_positifs(self):
         """Vérification que les arguments sont positifs."""
         for attribut in vars(self):
