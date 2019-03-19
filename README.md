@@ -13,6 +13,7 @@ défavorable via Hamilton-Jacobi.
 # Reste à faire
 
 - Rajouter dans Systeme de quoi visualiser les isoclines et les équilibres.
+- Régler l'import depuis exemple.
 - Visualisation du résultat.
 - Pour une grille de temps régulière on n'a pas à recalculer les points déplacés par les flux.
 - Rajouter une grille pour le contrôle.
