@@ -66,7 +66,7 @@ def affichage_contour(v, im=10, num=11):
     delta = n // im
     for i, ax in enumerate(axs):
         ax.contour(X.T, Y.T, v.valeurs[n - i * delta - 1],
-                   levels=np.linspace(0, 1, num))
+                   levels=np.linspace(0, 2, num))
         ax.set_title(f"t={v.ts[n - i * delta - 1]}")
     return fig
 

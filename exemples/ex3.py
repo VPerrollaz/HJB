@@ -7,7 +7,7 @@
 # Distributed under terms of the MIT license.
 
 """
-Exemple d'utilisation du module. Cas "intéressant" pas de boite invariante.
+Exemple d'utilisation du module. Pas de contrôle.
 """
 
 import sys
@@ -17,7 +17,7 @@ from hjb.cartographie import Valeur
 from hjb.systeme import Systeme
 import hjb.affichage as aff
 
-s = Systeme(a=1, b=2, c=2, d=1, M=1, alpha=6/8, beta=5/8, bx=1, by=1)
+s = Systeme(a=1, b=2, c=2, d=1, M=1, alpha=0, beta=0, bx=1, by=1)
 v = Valeur.from_dl(sys=s, T=50, dl=0.02)
 v.resolution()
 fc = aff.affichage_contour(v, im=10, num=21)
