@@ -12,9 +12,12 @@ défavorable via Hamilton-Jacobi.
 
 # Reste à faire
 
+- Rajouter dans Systeme de quoi visualiser les isoclines et les équilibres.
 - Visualisation du résultat.
-- Création Classe abstraite pour les systèmes?
 - Pour une grille de temps régulière on n'a pas à recalculer les points déplacés par les flux.
+- Rajouter une grille pour le contrôle.
+- Reconstruire les arcs singuliers.
+- Création Classe abstraite pour les systèmes?
 - Donner l'option de ne pas utiliser le bang-bang.
 - Documentation de la méthode numérique utilisée (dossier documentation).
 - Notebooks de démonstrations (dossier notebooks).
