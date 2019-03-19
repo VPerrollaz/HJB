@@ -21,10 +21,14 @@ def affichage_image(v):
     :type v: Valeur
     """
     fig, (ax_h, ax_b) = plt.subplots(nrows=2)
-    im_h = ax_h.imshow(v.valeurs[-1], extent=[v.sys.bx, 0, 0, v.sys.by])
+    im_h = ax_h.imshow(v.valeurs[-1],
+                       extent=[0, v.sys.bx, 0, v.sys.by],
+                       origin="lower")
     ax_h.set_title(f"t={v.ts[-1]}")
     fig.colorbar(im_h, ax=ax_h)
-    im_b = ax_b.imshow(v.valeurs[0], extent=[v.sys.bx, 0, 0, v.sys.by])
+    im_b = ax_b.imshow(v.valeurs[0],
+                       extent=[0, v.sys.bx, 0, v.sys.by],
+                       origin="lower")
     ax_b.set_title("t=0")
     fig.colorbar(im_b, ax=ax_b)
     return fig
