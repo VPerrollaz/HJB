@@ -116,3 +116,18 @@ class Systeme:
                         self.by * (self._c * self.bx + self._d * self.by
                                    + self._beta * self._M)])
         return np.linalg.norm(arr)
+
+    def dessin(self, ax):
+        """Dessine les points d'équilibres et les isoclines dans le repère.
+
+        :param ax: repère
+        :type ax: pyplot.Axes
+        """
+        xe, ye = self.etat_coexistence()
+        ax.scatter([0, self.bx, 0, xe], [0, 0, self.by, ye], color="red")
+        ax.plot([0, self.bx, 0],
+                [0, 0, self._a * self.by / self._b],
+                color="blue")
+        ax.plot([0, 0, self._d * self.by / self._c],
+                [0, self.by, 0],
+                color="yellow")

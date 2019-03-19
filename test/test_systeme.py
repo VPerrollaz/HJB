@@ -12,6 +12,9 @@ Tests de flux.
 import pytest
 from hjb.systeme import Systeme
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.collections import PathCollection
+from matplotlib.lines import Line2D
 
 
 @pytest.fixture
@@ -94,3 +97,13 @@ def test_borne(s1):
         x, y, u = mu * s1.bx, nu * s1.by, theta * s1._M
         X = np.array([x, y])
         assert np.linalg.norm(s1.flux(X, u)) < s1.borne()
+
+
+def test_dessin():
+    s = Systeme.exemple_bistable()
+    fig, ax = plt.subplots()
+    s.dessin(ax)
+    p, l1, l2, *_ = ax.get_children()
+    assert isinstance(l1, Line2D)
+    assert isinstance(l2, Line2D)
+    assert isinstance(p, PathCollection)
