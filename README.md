@@ -13,6 +13,7 @@ défavorable via Hamilton-Jacobi.
 # Reste à faire
 
 - Régler l'import depuis exemple.
+- Visualiser valeur/contrôle via des animations?
 - Pour une grille de temps régulière on n'a pas à recalculer les points déplacés par les flux.
 - Donner l'option de ne pas utiliser le bang-bang.
 - Rajouter une grille pour le contrôle.
