@@ -19,4 +19,5 @@ défavorable via Hamilton-Jacobi.
 - Rajouter une grille pour le contrôle.
 - Ne garder que les temps intéressants dans la grille des valeurs.
 - Reconstruire les arcs singuliers.
+- Optimiser, en particulier avec __slots__?
 - Création Classe abstraite pour les systèmes?
